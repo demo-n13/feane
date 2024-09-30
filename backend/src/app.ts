@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { appConfig, dbConfig } from './config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { Category, CategoryModule } from '@modules';
+import { Category, CategoryModule, Food, FoodModule } from '@modules';
 
 @Module({
   imports: [
@@ -12,19 +12,26 @@ import { Category, CategoryModule } from '@modules';
     }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (config: ConfigService) => ({
-        dialect: 'postgres',
-        host: config.get('database.host'),
-        port: config.get<number>('database.port'),
-        username: config.get('database.user'),
-        password: config.get('database.password'),
-        database: config.get('database.dbName'),
-        sync: { alter: true, force: false },
-        synchronize: false,
-        models: [Category],
-        autoLoadModels: true
-      }),
       inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        try {
+          return {
+            dialect: 'postgres',
+            host: config.get('database.host'),
+            port: config.get<number>('database.port'),
+            username: config.get('database.user'),
+            password: config.get('database.password'),
+            database: config.get('database.dbName'),
+            models: [Category, Food],
+            synchronize: true,
+            // sync: {force: true},
+            logging: console.log,
+            autoLoadModels: true,
+          };
+        } catch (error) {
+          console.log(error);
+        }
+      },
     }),
 
     // // Oddiy ulash
@@ -40,7 +47,7 @@ import { Category, CategoryModule } from '@modules';
     //   synchronize: true,
     //   logging: false,
     // }),
-    CategoryModule,
+    CategoryModule, FoodModule
   ],
 })
 export class AppModule {}
