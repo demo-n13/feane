@@ -14,6 +14,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     ServeStaticModule.forRoot({
       serveRoot: "/uploads",
       rootPath: "./uploads"
+      
     }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
