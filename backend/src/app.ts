@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { appConfig, dbConfig } from '@config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { Category, CategoryModule, Food, FoodModule, UploadModule } from '@modules';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { appConfig, dbConfig } from '@config';
+import { Category, CategoryModule, Food, FoodModule, UploadModule } from '@modules';
 
 @Module({
   imports: [
