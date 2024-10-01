@@ -15,8 +15,9 @@ async function bootstrap() {
     app.use(morgan('tiny'));
   }
 
-  await app.listen(configService.get<number>('appConfig.port'), () => {
-    console.log(`Listening on ${configService.get<number>('appConfig.port')}`);
+  const port = configService.get<number>('appConfig.port');
+  await app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
   });
 }
 bootstrap();
