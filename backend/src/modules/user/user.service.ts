@@ -12,7 +12,7 @@ export class UserService {
 
   ) { }
 
-  createUser(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto) {
 
     try {
 

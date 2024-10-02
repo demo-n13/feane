@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import * as morgan from 'morgan';
 import { AppModule } from './app';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { HttpExceptionFilter } from './filters/exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +20,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  app.useGlobalFilters(new HttpExceptionFilter())
 
   // USE MORGAN IN DEVELOPMENT MODE
   if (process.env?.NODE_ENV?.trim() == 'development') {
