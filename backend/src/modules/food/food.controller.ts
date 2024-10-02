@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -37,5 +40,12 @@ export class FoodController {
       ...createFoodPayload,
       image: image,
     });
+  }
+
+  @Delete('/delete/:foodId')
+  async deleteFood(
+    @Param('foodId', ParseIntPipe) foodId: number,
+  ): Promise<void> {
+    await this.#_service.deleteFood(foodId);
   }
 }

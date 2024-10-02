@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumberString, IsString } from 'class-validator';
 import { CreateFoodRequest } from '../interfaces';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -29,7 +29,7 @@ export class CreateFoodDto implements Omit<CreateFoodRequest, 'image'> {
     required: true,
     description: 'Taom narxi berilishi shart',
   })
-  @IsInt()
+  @IsNumberString()
   @IsNotEmpty()
   price: number;
 
@@ -47,7 +47,7 @@ export class CreateFoodDto implements Omit<CreateFoodRequest, 'image'> {
     required: true,
     description: 'Taom category idsi berilishi shart',
   })
-  @IsInt()
+  @IsNumberString()
   @IsNotEmpty()
   categoryId: number;
 }
