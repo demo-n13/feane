@@ -6,6 +6,7 @@ import { CreateFoodDto, UpdateFoodDto } from "./dtos";
 import * as multer from "multer";
 import * as path from "path";
 import { multerConfig } from "@config";
+import { Protected } from "@decorators";
 
 @Controller("foods")
 export class FoodController {
@@ -20,6 +21,7 @@ export class FoodController {
         return await this.#_service.getFood(foodId)
     }
 
+    @Protected(true)
     @Get('/')
     async getAllFoods(): Promise<Food[]> {
         return await this.#_service.getAllFoods()

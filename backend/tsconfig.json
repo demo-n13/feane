@@ -12,7 +12,8 @@
     "baseUrl": "./",
     "paths": {
       "@config": ["./src/config"],
-      "@modules": ["./src/modules"]
+      "@modules": ["./src/modules"],
+      "@decorators": ["./src/decorators"]
     },
     "incremental": true,
     "skipLibCheck": true,
