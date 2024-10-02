@@ -14,6 +14,7 @@ import { FoodService } from './food.service';
 import { CreateFoodDto } from './dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { Protected } from '@decorators';
 
 @ApiTags('Foods')
 @Controller('foods')
@@ -24,6 +25,7 @@ export class FoodController {
     this.#_service = service;
   }
 
+  @Protected(true)
   @Get()
   async getAllFoods(): Promise<Food[]> {
     return await this.#_service.getAllFoods();

@@ -4,10 +4,11 @@ import { Food } from './models';
 import { FoodService } from './food.service';
 import { FoodController } from './food.controller';
 import { UploadService } from '../upload';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [SequelizeModule.forFeature([Food])],
-  providers: [UploadService, FoodService],
+  providers: [UploadService, JwtService, FoodService],
   controllers: [FoodController],
 })
 export class FoodModule {}
