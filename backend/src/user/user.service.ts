@@ -1,11 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserModel } from './models/user.model';
+import { InjectModel } from '@nestjs/sequelize';
+
 
 @Injectable()
 export class UserService {
+  constructor(
+    @InjectModel(UserModel) private userModel: typeof UserModel,
+
+  ) { }
+
   createUser(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+
+    try {
+
+      const admin = await this.userModel.create({
+        phone: createUserDto.phone,
+        email: createUserDto.email,
+        image: createUserDto.image,
+      });
+      return {
+        statusCode: 201,
+        message: 'success',
+        data: admin,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   findAll() {
