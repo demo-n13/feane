@@ -1,37 +1,24 @@
-import { Table, Column, DataType, Model } from "sequelize-typescript";
-interface UserAttributes {
 
-    name: string;
-    phone: string
-    email: string
-    image: string
-}
+import { Table, Model, Column, DataType, HasMany } from 'sequelize-typescript';
+import { Order } from '@modules';
 
+@Table({ tableName: 'users', timestamps: true })
+export class User extends Model {
+  @Column({ type: DataType.BIGINT, primaryKey: true, autoIncrement: true })
+  id: number;
 
-@Table({ tableName: 'admin' })
-export class UserModel extends Model<UserModel, UserAttributes> {
-  @Column({
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV4,
-    allowNull: false,
-    primaryKey: true,
-  })
-  id: string;
+  @Column({ type: DataType.TEXT, allowNull: false, unique: true })
+  name: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
+  @Column({ type: DataType.TEXT, allowNull: false })
   phone: string;
 
-  @Column({
-    type: DataType.STRING,
-  })
-  image: string;
-
-  @Column({
-    type: DataType.STRING,
-    unique: true,
-  })
+  @Column({ type: DataType.TEXT, allowNull: false })
   email: string;
+
+  @Column({ type: DataType.TEXT, allowNull: true })
+  image?: string;
+
+  @HasMany(() => Order)
+  orders: Order[]
 }

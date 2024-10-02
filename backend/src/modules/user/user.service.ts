@@ -1,49 +1,51 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserModel } from './models/user.model';
-import { InjectModel } from '@nestjs/sequelize';
 
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { User } from './models';
+import { CreateUserRequest } from './interfaces';
+import { UploadFileResponse, UploadService } from '../upload';
+import { Order } from '../order';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(UserModel) private userModel: typeof UserModel,
 
-  ) { }
+    @InjectModel(User) private userModel: typeof User,
+    private uploadService: UploadService,
+  ) {}
 
-  async createUser(createUserDto: CreateUserDto) {
+  async getAllUsers(): Promise<User[]> {
+    return await this.userModel.findAll({
+      include: Order,
+    });
+  }
 
-    try {
+  async createUser(payload: CreateUserRequest): Promise<void> {
+    let imageUrl: null | UploadFileResponse = null;
 
-      const admin = await this.userModel.create({
-        phone: createUserDto.phone,
-        email: createUserDto.email,
-        image: createUserDto.image,
+    if (payload?.image) {
+      imageUrl = await this.uploadService.uploadFile({
+        destination: 'uploads',
+        file: payload.image,
       });
-      return {
-        statusCode: 201,
-        message: 'success',
-        data: admin,
-      };
-    } catch (error) {
-      throw new InternalServerErrorException(error);
     }
+
+    await this.userModel.create({
+      name: payload.name,
+      phone: payload.phone,
+      email: payload.email,
+      image: imageUrl ? imageUrl?.imageUrl : '',
+    });
   }
 
-  findAll() {
-    return `This action returns all user`;
-  }
+  async deleteUser(userId: number): Promise<void> {
+    const foundedUser = await this.userModel.findByPk(userId);
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+    if (foundedUser?.image) {
+      await this.uploadService.removeFile({ fileName: foundedUser.image });
+    }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    await this.userModel.destroy({ where: { id: userId } });
+>>>>>>> 6c61f4ade19c1adcb58c8ce4ac09c2eeacd175c5
   }
 }

@@ -1,34 +1,47 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { User } from './models';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiConsumes, ApiOperation } from '@nestjs/swagger';
+import { CreateUserDto } from './dtos';
+import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('user') 
+@Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private service: UserService) {}
 
-  @Post('/add')
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
-  }
-
+  @ApiOperation({ summary: 'Barcha userlarni olish' })
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async getAllUsers(): Promise<User[]> {
+    return await this.service.getAllUsers();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'User yaratish' })
+  @Post('/add')
+  @UseInterceptors(FileInterceptor('image'))
+  async createUser(
+    @Body() payload: CreateUserDto,
+    @UploadedFile() image: Express.Multer.File,
+  ): Promise<void> {
+    await this.service.createUser({ ...payload, image });
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Delete('/delete/:userId')
+  @ApiOperation({ summary: "Userni o'chirish" })
+  async deleteUser(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<void> {
+    await this.service.deleteUser(userId);
   }
 }

@@ -32,4 +32,12 @@ export class FoodService {
       category_id: payload.categoryId,
     });
   }
+
+  async deleteFood(id: number): Promise<void> {
+    const foundedFood = await this.foodModel.findByPk(id);
+
+    await this.#_uploadService.removeFile({ fileName: foundedFood.image });
+
+    await this.foodModel.destroy({ where: { id } });
+  }
 }
