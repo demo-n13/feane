@@ -5,6 +5,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { CreateFoodDto, UpdateFoodDto } from "./dtos";
 import * as multer from "multer";
 import * as path from "path";
+import { multerConfig } from "@config";
 
 @Controller("foods")
 export class FoodController {
@@ -25,38 +26,16 @@ export class FoodController {
     }
 
     @Post('/add')
-    @UseInterceptors(FileInterceptor("image", {
-        storage: multer.diskStorage({
-            destination(req, file, callback) {
-                return callback(null, "./uploads")
-            },
-            filename: function (req, file, cb) {
-                const extName = path.extname(file.originalname)
-              const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-              cb(null, file.fieldname + '-' + uniqueSuffix + extName)
-            }
-          })
-    }))
+    @UseInterceptors(FileInterceptor("image", multerConfig))
     async createFood(@Body() createFoodPayload: CreateFoodDto, @UploadedFile() image: Express.Multer.File): Promise<void> {
-        // console.log(image)
-        await this.#_service.createFood({...createFoodPayload, image: image.filename})
+        console.log(image, "*", createFoodPayload)
+        await this.#_service.createFood({...createFoodPayload, image: image?.filename})
     }
 
     @Patch('/update/:foodId')
-    @UseInterceptors(FileInterceptor("image", {
-        storage: multer.diskStorage({
-            destination(req, file, callback) {
-                return callback(null, "./uploads")
-            },
-            filename: function (req, file, cb) {
-                const extName = path.extname(file.originalname)
-              const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-              cb(null, file.fieldname + '-' + uniqueSuffix + extName)
-            }
-          })
-    }))
+    @UseInterceptors(FileInterceptor("image", multerConfig))
     async updateFood(@Body() updateFoodPayload: UpdateFoodDto, @Param('foodId', ParseIntPipe) foodId: number, @UploadedFile() image: Express.Multer.File): Promise<string | void> {
-        await this.#_service.updateFood({...updateFoodPayload, image: image.filename}, foodId)
+        await this.#_service.updateFood({...updateFoodPayload, image: image?.filename}, foodId)
     }
 
     @Delete('/delete/:foodId')

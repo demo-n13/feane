@@ -18,7 +18,7 @@ export class FoodService {
   }
 
   async createFood(payload: CreateFoodRequest): Promise<void> {
-    console.log(payload.image)
+    // console.log(payload.image)
     await this.foodModel.create({
       name: payload.name,
       description: payload.description,
