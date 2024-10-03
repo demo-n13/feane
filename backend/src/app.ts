@@ -4,6 +4,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { appConfig, dbConfig } from '@config';
 import { Category, CategoryModule, Food, FoodModule, Order, OrderItem, OrderModule, UploadModule, User, UserModule } from '@modules';
+import { CheckAuthGuard } from './guards/check-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -44,5 +46,11 @@ import { Category, CategoryModule, Food, FoodModule, Order, OrderItem, OrderModu
     UserModule,
     OrderModule,
   ],
+  providers: [
+    {
+      useClass: CheckAuthGuard,
+      provide: APP_GUARD
+    }
+  ]
 })
 export class AppModule { }

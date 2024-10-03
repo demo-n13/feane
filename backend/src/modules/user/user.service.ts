@@ -46,6 +46,6 @@ export class UserService {
     }
 
     await this.userModel.destroy({ where: { id: userId } });
->>>>>>> 6c61f4ade19c1adcb58c8ce4ac09c2eeacd175c5
+
   }
 }

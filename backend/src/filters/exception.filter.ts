@@ -17,6 +17,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
             : { message: 'Internal server error' };
         
 
+            
         response.status(status).json({
             statusCode: status,
             path: request.url,
