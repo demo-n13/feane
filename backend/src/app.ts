@@ -3,9 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { appConfig, dbConfig } from '@config';
+
 import { Category, CategoryModule, Food, FoodModule, Order, OrderItem, OrderModule, UploadModule, User, UserModule } from '@modules';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+
 
 @Module({
   imports: [
@@ -14,8 +16,15 @@ import { APP_GUARD } from '@nestjs/core';
       load: [appConfig, dbConfig],
     }),
     ServeStaticModule.forRoot({
-      serveRoot: "/uploads",
-      rootPath: "./uploads"
+      serveRoot: '/uploads',
+      rootPath: './uploads',
+    }),
+    JwtModule.register({
+      secret: 'my secret',
+      global: true,
+      signOptions: {
+        expiresIn: 60 * 15,
+      },
     }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
@@ -49,8 +58,14 @@ import { APP_GUARD } from '@nestjs/core';
   providers: [
     {
       useClass: CheckAuthGuard,
+<<<<<<< HEAD
       provide: APP_GUARD
     }
   ]
+=======
+      provide: APP_GUARD,
+    },
+  ],
+>>>>>>> bd0b626c66f6641836f5b6419d68e62fada3486a
 })
-export class AppModule { }
+export class AppModule {}

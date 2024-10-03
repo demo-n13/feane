@@ -8,6 +8,7 @@ import { Order } from '../order';
 
 @Injectable()
 export class UserService {
+  findOne: any;
   constructor(
 
     @InjectModel(User) private userModel: typeof User,
