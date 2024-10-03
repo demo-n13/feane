@@ -21,7 +21,7 @@ export class CategoryService {
     await this.categoryModel.update({ name: payload.name }, { where: { id: payload.id } })
   }
 
-  async deleteCategory(id: number): Promise<void> {
+  async deleteCategory(id: number): Promise<void> {   
     await this.categoryModel.destroy({
       where: {
         id
