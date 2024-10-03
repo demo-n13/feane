@@ -19,9 +19,9 @@ export class CheckAuthGuard implements CanActivate {
     const ctx = context.switchToHttp();
     const request = ctx.getRequest<Request>();
 
-    const isProtected = this.reflector.get(Protected, context.getHandler())
+    const isProtected = this.reflector.get<boolean>(Protected, context.getHandler())
     const bearerToken = request.headers['authorization'];
-
+    console.log(bearerToken)
     if (
       !(
         bearerToken &&
@@ -33,7 +33,7 @@ export class CheckAuthGuard implements CanActivate {
     }
 
     const token = bearerToken.split('Bearer ')[1]
-    console.log(token, isProtected, 'access token from guard')
+    // console.log(token, isProtected, 'access token from guard')
 
     return true;
   }

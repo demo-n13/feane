@@ -27,19 +27,6 @@ import { UniqueConstraintError } from 'sequelize';
       }
 
       const responseError = exception instanceof HttpException ? exception.getResponse() : "Internal server error";
-    //   if (exception instanceof UniqueConstraintError) {
-    //     response.send({
-    //         statusCode: 409,
-    //         message: 'Duplicate error',
-    //     });
-    // } else if (exception instanceof HttpException) {
-    //     response.send(responseError);
-    // } else {
-    //     response.send({
-    //         statusCode: 500,
-    //         message: 'Internal Server Error',
-    //     });
-    // }
   
       return response.status(500).json({
         message: exception?.message || 'Internal server error',

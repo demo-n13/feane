@@ -1,34 +1,62 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { User } from './models';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CreateUserDto, UpdateUserDto } from './dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Protected } from '@decorators';
 
-@Controller('user')
+@ApiTags('Users')
+@Controller('/users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private service: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @Protected(false)
+  @ApiOperation({ summary: 'Barcha userlarni olish' })
+  @Get('/')
+  async getAllUsers(): Promise<User[]> {
+    return await this.service.getAllUsers();
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'User yaratish' })
+  @Post('/add')
+  @UseInterceptors(FileInterceptor('image'))
+  async createUser(
+    @Body() payload: CreateUserDto,
+    @UploadedFile() image: Express.Multer.File,
+  ): Promise<void> {
+    await this.service.createUser({ ...payload, image });
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'User yangilash' })
+  @Patch('update/:userId')
+  @UseInterceptors(FileInterceptor('image'))
+  async updateUser(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body() payload: UpdateUserDto,
+    @UploadedFile() image: Express.Multer.File,
+  ): Promise<void> {
+    await this.service.updateUser(userId, { ...payload, image });
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Delete('/delete/:userId')
+  @ApiOperation({ summary: "Userni o'chirish" })
+  async deleteUser(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<void> {
+    await this.service.deleteUser(userId);
   }
 }

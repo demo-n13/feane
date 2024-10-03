@@ -7,7 +7,9 @@ import * as multer from "multer";
 import * as path from "path";
 import { multerConfig } from "@config";
 import { Protected } from "@decorators";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Foods')
 @Controller("foods")
 export class FoodController {
     #_service: FoodService;

@@ -7,6 +7,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { ExceptionHandlerFilter } from './filters';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { CheckAuthGuard } from './guards';
+import { UserModule } from './modules/user';
 
 @Module({
   imports: [
@@ -55,7 +56,7 @@ import { CheckAuthGuard } from './guards';
     //   synchronize: true,
     //   logging: false,
     // }),
-    CategoryModule, FoodModule, UploadModule
+    CategoryModule, FoodModule, UserModule, UploadModule
   ],
   providers: [
     {

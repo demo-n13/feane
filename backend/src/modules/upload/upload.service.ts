@@ -1,7 +1,7 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { Injectable } from '@nestjs/common';
-import { UploadFileRequest, UploadFileResponse, UploadFilesRequest, UploadFilesResponse } from './interfaces';
+import { RemoveFileRequest, RemoveFileResponse, UploadFileRequest, UploadFileResponse, UploadFilesRequest, UploadFilesResponse } from './interfaces';
 import { existsSync } from 'fs';
 
 @Injectable()
@@ -37,8 +37,23 @@ export class UploadService {
   }
 
   async uploadFiles(payload: UploadFilesRequest): Promise<UploadFilesResponse> {
-
-    
+    // 
     return 
+  }
+
+  async removeFile(payload: RemoveFileRequest): Promise<RemoveFileResponse> {
+    console.log(payload)
+    const filePath = path.join(__dirname, '../../../', payload.fileName);
+
+    const isFileExists = existsSync(filePath);
+
+    // CREATE UPLOAD FOLDER IF DESTINATION IS NOT FOUND
+    if (isFileExists) {
+      await fs.unlink(filePath);
+    }
+
+    return {
+      message: 'File removed successfully',
+    };
   }
 }

@@ -9,6 +9,9 @@ import {
   import { UploadService } from './upload.service';
   import { UploadFileDto } from './dtos/upload-file.dto';
   import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
+
+  @ApiTags("Upload")
   @Controller('uploads')
   export class UploadController {
     constructor(private service: UploadService) {}

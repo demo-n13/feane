@@ -12,7 +12,9 @@ import { CategoryService } from './category.service';
 import { Category } from './models';
 import { CreateCategoryDto } from './dtos';
 import { UpdateCategoryDto } from './dtos/update-category.dtos';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Categories')
 @Controller('categories')
 export class CategoryController {
   #_service: CategoryService;
