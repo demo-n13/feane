@@ -7,7 +7,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 import { OrderItem } from './order-item.model';
-import { User } from 'src/modules/user';
+import { User } from '@modules';
 
 export enum OrderStatus {
   progress,

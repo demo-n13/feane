@@ -16,23 +16,23 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 @ApiTags('Category')
 @Controller('categories')
 export class CategoryController {
-  #_service: CategoryService;
+  service: CategoryService;
 
   constructor(service: CategoryService) {
-    this.#_service = service;
+    this.service = service;
   }
 
   @ApiOperation({ description: 'Barcha categoriesni olish', summary: "Barchasini olish" })
   @Get()
   async getCategories(): Promise<Category[]> {
-    return await this.#_service.getAllCategories();
+    return await this.service.getAllCategories();
   }
 
   @Post('/add')
   async createCategory(
     @Body() createCategoryPayload: CreateCategoryDto,
   ): Promise<void> {
-    await this.#_service.createCategory(createCategoryPayload);
+    await this.service.createCategory(createCategoryPayload);
   }
 
   @Put('/edit/:categoryId')
@@ -40,7 +40,7 @@ export class CategoryController {
     @Body() updateCategoryPayload: UpdateCategoryDto,
     @Param('categoryId', ParseIntPipe) categoryId: number,
   ): Promise<void> {
-    await this.#_service.updateCategory({
+    await this.service.updateCategory({
       ...updateCategoryPayload,
       id: categoryId,
     });
@@ -50,6 +50,6 @@ export class CategoryController {
   async deleteCategory(
     @Param('categoryId', ParseIntPipe) categoryId: number,
   ): Promise<void> {
-    await this.#_service.deleteCategory(categoryId);
+    await this.service.deleteCategory(categoryId);
   }
 }
