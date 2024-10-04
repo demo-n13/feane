@@ -11,13 +11,14 @@ import { UploadService } from './upload.service';
 import { UploadFileDto } from './dtos/upload-file.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { RemoveFileDto } from './dtos';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags("Upload")
 @Controller('uploads')
 export class UploadController {
   constructor(private service: UploadService) {}
   @ApiOperation({ summary: 'Yangi file yaratish' })
+  @ApiConsumes("multipart/form-data")
   @Post('/add')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
