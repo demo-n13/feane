@@ -1,5 +1,5 @@
 import { Table, Model, Column, DataType, HasMany } from 'sequelize-typescript';
-import { Order } from '@modules';
+import { Order, Review } from '@modules';
 
 @Table({ tableName: 'users', timestamps: true })
 export class User extends Model {
@@ -20,4 +20,7 @@ export class User extends Model {
 
   @HasMany(() => Order)
   orders: Order[]
+
+  @HasMany(() => Review)
+  reviews: Review[]
 }

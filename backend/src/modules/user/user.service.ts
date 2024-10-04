@@ -4,6 +4,7 @@ import { User } from './models';
 import { CreateUserRequest } from './interfaces';
 import { UploadFileResponse, UploadService } from '../upload';
 import { Order } from '../order';
+import { Review } from '../review';
 
 @Injectable()
 export class UserService {
@@ -14,7 +15,7 @@ export class UserService {
 
   async getAllUsers(): Promise<User[]> {
     return await this.userModel.findAll({
-      include: Order,
+      include: [Order, Review],
     });
   }
 
