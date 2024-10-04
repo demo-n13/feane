@@ -11,10 +11,11 @@ import {
 } from '@nestjs/common';
 import { User } from './models';
 import { UserService } from './user.service';
-import { ApiConsumes, ApiOperation } from '@nestjs/swagger';
+import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
 
+@ApiTags("Users")
 @Controller('users')
 export class UserController {
   constructor(private service: UserService) {}
@@ -25,6 +26,7 @@ export class UserController {
     return await this.service.getAllUsers();
   }
 
+  @ApiOperation({ summary: 'Yangi user yaratish' })
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'User yaratish' })
   @Post('/add')

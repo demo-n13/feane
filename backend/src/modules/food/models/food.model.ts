@@ -3,7 +3,7 @@ import { Category } from '@modules';
 
 @Table({ tableName: 'foods', timestamps: true })
 export class Food extends Model {
-    @Column({ type: DataType.BIGINT, primaryKey: true, autoIncrement: true })
+    @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
     id: number;
 
     @Column({ type: DataType.TEXT, allowNull: false, unique: true })

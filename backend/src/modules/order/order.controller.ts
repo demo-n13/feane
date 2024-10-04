@@ -23,18 +23,18 @@ export class OrderController {
 
   @ApiOperation({
     description: 'Barcha orderlarni olish',
-    summary: 'Barchasini olish',
+    summary: 'Barcha orderlarni olish',
   })
   @Get()
   async getOrders(): Promise<Order[]> {
     return await this.#_service.getAllOrders();
   }
-
+  @ApiOperation({ summary: 'Yangi order yaratish' })
   @Post('/add')
   async createOrder(@Body() createOrderPayload: CreateOrderDto): Promise<void> {
     await this.#_service.createOrder(createOrderPayload);
   }
-
+  @ApiOperation({ summary: 'Orderni o\'chirish' })
   @Delete('/delete/:orderId')
   async deleteOrder(
     @Param('orderId', ParseIntPipe) orderId: number,

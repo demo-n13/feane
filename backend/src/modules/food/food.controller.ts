@@ -13,8 +13,7 @@ import { Food } from './models';
 import { FoodService } from './food.service';
 import { CreateFoodDto } from './dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { Protected } from '@decorators';
+import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Foods')
 @Controller('foods')
@@ -24,13 +23,12 @@ export class FoodController {
   constructor(service: FoodService) {
     this.#_service = service;
   }
-
-  @Protected(true)
+  @ApiOperation({ summary: 'Barcha foodlarni olish' })
   @Get()
   async getAllFoods(): Promise<Food[]> {
     return await this.#_service.getAllFoods();
   }
-
+  @ApiOperation({ summary: 'Yangi food yaratish' })
   @ApiConsumes('multipart/form-data')
   @Post('/add')
   @UseInterceptors(FileInterceptor('image'))
@@ -44,6 +42,7 @@ export class FoodController {
     });
   }
 
+  @ApiOperation({ summary: 'Foodni o\'chirish' })
   @Delete('/delete/:foodId')
   async deleteFood(
     @Param('foodId', ParseIntPipe) foodId: number,

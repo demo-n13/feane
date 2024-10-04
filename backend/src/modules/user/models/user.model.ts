@@ -3,7 +3,7 @@ import { Order } from '@modules';
 
 @Table({ tableName: 'users', timestamps: true })
 export class User extends Model {
-  @Column({ type: DataType.BIGINT, primaryKey: true, autoIncrement: true })
+  @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
 
   @Column({ type: DataType.TEXT, allowNull: false, unique: true })

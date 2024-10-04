@@ -10,7 +10,7 @@ import { User } from '@modules';
 
 @Table({ tableName: 'order-items', timestamps: true })
 export class OrderItem extends Model {
-  @Column({ type: DataType.BIGINT, primaryKey: true, autoIncrement: true })
+  @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
 
   @Column({ type: DataType.INTEGER, allowNull: false })

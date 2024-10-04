@@ -11,6 +11,8 @@ import {
   Order,
   OrderItem,
   OrderModule,
+  Review,
+  ReviewModule,
   UploadModule,
   User,
   UserModule,
@@ -50,7 +52,7 @@ import { CheckRoleGuard } from './guards/check-role.guard';
             password: config.get('database.password'),
             database: config.get('database.dbName'),
             storage: ":memory:",
-            models: [Category, Food, User, Order, OrderItem],
+            models: [Category, Food, User, Order, OrderItem, Review],
             synchronize: true,
             // sync: {force: true},
             logging: console.log,
@@ -66,6 +68,7 @@ import { CheckRoleGuard } from './guards/check-role.guard';
     UploadModule,
     UserModule,
     OrderModule,
+    ReviewModule,
   ],
   providers: [
     {

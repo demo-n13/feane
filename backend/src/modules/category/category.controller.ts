@@ -22,12 +22,12 @@ export class CategoryController {
     this.service = service;
   }
 
-  @ApiOperation({ description: 'Barcha categoriesni olish', summary: "Barchasini olish" })
+  @ApiOperation({ description: 'Barcha categoriesni olish', summary: "Barcha categoriyalarni olish" })
   @Get()
   async getCategories(): Promise<Category[]> {
     return await this.service.getAllCategories();
   }
-
+  @ApiOperation({ summary: 'Yangi category yaratish' })
   @Post('/add')
   async createCategory(
     @Body() createCategoryPayload: CreateCategoryDto,
@@ -35,6 +35,7 @@ export class CategoryController {
     return await this.service.createCategory(createCategoryPayload);
   }
 
+  @ApiOperation({ summary: 'Categoryni update qilish' })
   @Put('/edit/:categoryId')
   async updateCategory(
     @Body() updateCategoryPayload: UpdateCategoryDto,
@@ -45,7 +46,7 @@ export class CategoryController {
       id: categoryId,
     });
   }
-
+  @ApiOperation({ summary: 'Categoryni o\'chirish' })
   @Delete('/delete/:categoryId')
   async deleteCategory(
     @Param('categoryId', ParseIntPipe) categoryId: number,

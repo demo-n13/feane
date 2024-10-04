@@ -11,13 +11,13 @@ import { UploadService } from './upload.service';
 import { UploadFileDto } from './dtos/upload-file.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { RemoveFileDto } from './dtos';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags("Upload")
 @Controller('uploads')
 export class UploadController {
   constructor(private service: UploadService) {}
-
+  @ApiOperation({ summary: 'Yangi file yaratish' })
   @Post('/add')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
@@ -26,7 +26,7 @@ export class UploadController {
   ): Promise<UploadFileResponse> {
     return await this.service.uploadFile({ ...payload, file });
   }
-
+  @ApiOperation({ summary: 'mavjud faylni o\'chirish' })
   @Delete('/remove')
   async removeFile(
     @Body() payload: RemoveFileDto,
