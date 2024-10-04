@@ -48,7 +48,7 @@ describe('CategoryController', () => {
       mockCategoryService.createCategory.mockResolvedValue(category);
 
       const result = await categoryController.createCategory(createCategoryDto);
-      expect(result).toEqual(undefined);
+      expect(result).toEqual(category);
       expect(categoryService.createCategory).toHaveBeenCalledWith(createCategoryDto);
     });
   });

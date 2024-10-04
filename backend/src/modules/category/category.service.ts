@@ -11,10 +11,11 @@ export class CategoryService {
     return await this.categoryModel.findAll();
   }
 
-  async createCategory(payload: CreateCategoryRequest): Promise<void> {
-    await this.categoryModel.create({
+  async createCategory(payload: CreateCategoryRequest): Promise<Category> {
+    const category = await this.categoryModel.create({
       name: payload.name
     })
+    return category
   }
 
   async updateCategory(payload: UpdateCategoryRequest): Promise<void> {

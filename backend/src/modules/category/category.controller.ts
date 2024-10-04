@@ -31,8 +31,8 @@ export class CategoryController {
   @Post('/add')
   async createCategory(
     @Body() createCategoryPayload: CreateCategoryDto,
-  ): Promise<void> {
-    await this.service.createCategory(createCategoryPayload);
+  ): Promise<Category> {
+    return await this.service.createCategory(createCategoryPayload);
   }
 
   @Put('/edit/:categoryId')
