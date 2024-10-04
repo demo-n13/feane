@@ -14,9 +14,10 @@ export class UserService {
   ) {}
 
   async getAllUsers(): Promise<User[]> {
-    return await this.userModel.findAll({
+    const data= await this.userModel.findAll({
       include: [Order, Review],
     });
+    return data
   }
 
   async createUser(payload: CreateUserRequest): Promise<void> {

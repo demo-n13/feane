@@ -1,7 +1,7 @@
 import {
   IsEmail,
-  IsNumberString,
   IsOptional,
+  IsPhoneNumber,
   IsString,
   Length,
 } from 'class-validator';
@@ -28,10 +28,12 @@ export class CreateUserDto implements Omit<CreateUserRequest, 'image'> {
   @ApiProperty({
     type: String,
     required: true,
-    example: '933211232',
+    example: '+998933211232',
+    maxLength: 13,
+    minLength: 13
   })
-  @IsNumberString()
-  @Length(9, 9)
+  @IsPhoneNumber("UZ")
+  @Length(13, 13)
   phone: string;
 
   @ApiProperty({
