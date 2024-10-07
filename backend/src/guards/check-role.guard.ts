@@ -18,9 +18,6 @@ export class CheckRoleGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest<RequestInterface>();
     const roles = this.reflector.get(Roles, context.getHandler());
-    
-    // test
-    return true;
 
     if (!roles || !roles.includes(request.role)) {
       throw new NotAcceptableException(

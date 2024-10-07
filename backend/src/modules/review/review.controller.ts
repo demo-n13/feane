@@ -11,7 +11,9 @@ import {
 import { ReviewService } from './review.service';
 import { Review } from './models';
 import { CreateReviewDto, UpdateReviewDto } from './dtos';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Protected, Roles } from '@decorators';
+import { UserRoles } from '../user';
 
 @ApiTags('Reviews')
 @Controller('reviews')
@@ -22,11 +24,17 @@ export class ReviewController {
     this.service = service;
   }
 
+  @ApiBearerAuth()
+  @Protected(false)
+  @Roles([UserRoles.admin, UserRoles.user])
   @ApiOperation({ description: 'Barcha reviewlarni olish', summary: "Barcha reviewlarni olish" })
   @Get()
   async getReviews(): Promise<Review[]> {
     return await this.service.getAllReviews();
   }
+  @ApiBearerAuth()
+  @Protected(true)
+  @Roles([UserRoles.admin, UserRoles.user])
   @ApiOperation({ summary: 'Yangi review yaratish' })
   @Post('/add')
   async createReview(
@@ -34,6 +42,10 @@ export class ReviewController {
   ): Promise<Review> {
     return await this.service.createReview(createReviewPayload);
   }
+
+  @ApiBearerAuth()
+  @Protected(true)
+  @Roles([UserRoles.admin])
   @ApiOperation({ summary: 'Reviewlarni yangilash' })
   @Put('/edit/:reviewid')
   async updateReview(
@@ -46,6 +58,10 @@ export class ReviewController {
     });
   }
 
+
+  @ApiBearerAuth()
+  @Protected(true)
+  @Roles([UserRoles.admin])
   @ApiOperation({ summary: 'Reviewni o\'chirish' })
   @Delete('/delete/:reviewId')
   async deleteReview(

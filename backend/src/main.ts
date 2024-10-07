@@ -36,6 +36,7 @@ async function bootstrap() {
     .setTitle('Feane restaurant API')
     .setDescription('The feane API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

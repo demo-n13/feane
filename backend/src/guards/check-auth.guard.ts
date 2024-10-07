@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 import { Protected } from '@decorators';
 import { JsonWebTokenError, JwtService, NotBeforeError, TokenExpiredError } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { UserRoles } from '@modules';
 
 export declare interface RequestInterface extends Request {
   userId: string | undefined;
@@ -35,7 +36,7 @@ export class CheckAuthGuard implements CanActivate {
     );
 
     if (!isProtected) {
-      request.role = "user"
+      request.role = UserRoles.user
       return true
     }
 
