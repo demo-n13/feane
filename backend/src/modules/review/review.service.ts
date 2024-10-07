@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Review } from './models';
 import { CreateReviewRequest, UpdateReviewRequest } from './interfaces';
+import { User } from '../user';
 
 @Injectable()
 export class ReviewService {
   constructor(@InjectModel(Review) private reviewModel: typeof Review) {}
 
   async getAllReviews(): Promise<Review[]> {
-    return await this.reviewModel.findAll();
+    return await this.reviewModel.findAll({include: User});
   }
 
   async createReview(payload: CreateReviewRequest): Promise<Review> {

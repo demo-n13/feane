@@ -28,6 +28,12 @@ export class FoodController {
   async getAllFoods(): Promise<Food[]> {
     return await this.#_service.getAllFoods();
   }
+
+  @ApiOperation({ summary: 'Barcha foodlarni category bo\'yicha olish' })
+  @Get("/:categoryId")
+  async getAllFoodsByCategory(@Param("categoryId", ParseIntPipe) categoryId: number): Promise<Food[]> {
+    return await this.#_service.getAllFoodsByCategory(categoryId);
+  }
   @ApiOperation({ summary: 'Yangi food yaratish' })
   @ApiConsumes('multipart/form-data')
   @Post('/add')
