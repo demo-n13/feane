@@ -18,10 +18,9 @@ import {
   User,
   UserModule,
 } from '@modules';
-import { CheckAuthGuard } from './guards';
+import { CheckAuthGuard, CheckRoleGuard } from '@guards';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { CheckRoleGuard } from './guards/check-role.guard';
 
 @Module({
   imports: [
