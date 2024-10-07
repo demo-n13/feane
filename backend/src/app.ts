@@ -21,9 +21,14 @@ import {
 import { CheckAuthGuard, CheckRoleGuard } from '@guards';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([{
+      ttl: 30000,
+      limit: 300,
+    }]),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [appConfig, dbConfig, jwtConfig],
@@ -71,6 +76,10 @@ import { JwtModule } from '@nestjs/jwt';
     AuthModule,
   ],
   providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    },    
     {
       useClass: CheckAuthGuard,
       provide: APP_GUARD,
