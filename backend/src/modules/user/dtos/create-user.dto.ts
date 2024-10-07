@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsEnum,
   IsOptional,
   IsPhoneNumber,
   IsString,
@@ -7,6 +8,7 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateUserRequest } from '../interfaces';
+import { UserRoles } from '../models';
 
 export class CreateUserDto implements Omit<CreateUserRequest, 'image'> {
   @ApiProperty({
@@ -43,4 +45,13 @@ export class CreateUserDto implements Omit<CreateUserRequest, 'image'> {
   })
   @IsOptional()
   image?: any;
+
+  @ApiProperty({
+    enum: UserRoles,
+    name: "Role",
+    required: false,
+  })
+  @IsOptional()
+  @IsEnum(UserRoles)
+  role?: UserRoles;
 }

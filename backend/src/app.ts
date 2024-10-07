@@ -52,7 +52,6 @@ import { CheckRoleGuard } from './guards/check-role.guard';
             username: config.get('database.user'),
             password: config.get('database.password'),
             database: config.get('database.dbName'),
-            storage: ":memory:",
             models: [Category, Food, User, Order, OrderItem, Review],
             synchronize: true,
             // sync: {force: true},

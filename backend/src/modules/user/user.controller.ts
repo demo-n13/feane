@@ -12,7 +12,7 @@ import {
 import { User } from './models';
 import { UserService } from './user.service';
 import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from './dtos';
+import { CreateUserDto, UpdateUserImageDto } from './dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags("Users")
@@ -28,7 +28,6 @@ export class UserController {
 
   @ApiOperation({ summary: 'Yangi user yaratish' })
   @ApiConsumes('multipart/form-data')
-  @ApiOperation({ summary: 'User yaratish' })
   @Post('/add')
   @UseInterceptors(FileInterceptor('image'))
   async createUser(
@@ -36,6 +35,17 @@ export class UserController {
     @UploadedFile() image: Express.Multer.File,
   ): Promise<void> {
     await this.service.createUser({ ...payload, image });
+  }
+
+  @ApiOperation({ summary: 'User rasmini qo\'shish va/yoki yangilash' })
+  @ApiConsumes('multipart/form-data')
+  @Post('/add/image')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadUserImage(
+    @Body() payload: UpdateUserImageDto,
+    @UploadedFile() image: Express.Multer.File,
+  ): Promise<void> {
+    await this.service.uploadUserImage({...payload, image});
   }
 
   @Delete('/delete/:userId')

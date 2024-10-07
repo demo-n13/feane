@@ -17,7 +17,7 @@ export class User extends Model {
   @Column({ type: DataType.TEXT, allowNull: false })
   phone: string;
 
-  @Column({ type: DataType.TEXT, allowNull: false })
+  @Column({ type: DataType.TEXT, allowNull: false, unique: true })
   email: string;
 
   @Column({
