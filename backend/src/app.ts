@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { appConfig, dbConfig } from '@config';
+import { appConfig, dbConfig, jwtConfig } from '@config';
 import {
   Category,
   CategoryModule,
@@ -26,7 +26,7 @@ import { CheckRoleGuard } from './guards/check-role.guard';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, dbConfig],
+      load: [appConfig, dbConfig,jwtConfig],
     }),
     ServeStaticModule.forRoot({
       serveRoot: '/uploads',
