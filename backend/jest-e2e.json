@@ -10,7 +10,8 @@
     "^@decorators": "<rootDir>/../src/decorators",
     "^@guards": "<rootDir>/../src/guards",
     "^@filters": "<rootDir>/../src/filters",
-    "^@config": "<rootDir>/../src/config"
+    "^@config": "<rootDir>/../src/config",
+    "^@client": "<rootDir>/../src/client"
   },
     "testEnvironment": "node"
   }

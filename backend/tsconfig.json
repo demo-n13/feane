@@ -15,7 +15,8 @@
       "@modules": ["./src/modules"],
       "@decorators": ["./src/decorators"],
       "@filters": ["./src/filters"],
-      "@guards": ["./src/guards"]
+      "@guards": ["./src/guards"],
+      "@client": ["./src/client"]
     },
     "incremental": true,
     "skipLibCheck": true,

@@ -29,6 +29,8 @@ export class ExceptionHandlerFilter implements ExceptionFilter {
     // CATCH UNIQUE FIELD ERROR FROM DATABASE
     exception = catchUniqueFieldError(exception)
 
+    console.log(exception)
+
     if (exception instanceof HttpException) {
       return response.status(exception.getStatus()).json({
         message: exception.message,

@@ -14,7 +14,8 @@ module.exports = {
       "@modules": ["<rootDir>/modules"],
       "@decorators": ["<rootDir>/decorators"],
       "@filters": ["<rootDir>/filters"],
-      "@guards": ["<rootDir>/guards"]
+      "@guards": ["<rootDir>/guards"],
+      "@client": ["<rootDir>/client"]
     },
     collectCoverageFrom: [
       "**/*.(t|j)s"
