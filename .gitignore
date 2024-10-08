@@ -2,3 +2,6 @@ backend/node_modules
 backend/.env
 backend/dist
 backend/uploads/*
+backend/.env.test
+
+frontend/node_modules

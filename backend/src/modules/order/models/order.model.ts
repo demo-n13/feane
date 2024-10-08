@@ -7,7 +7,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 import { OrderItem } from './order-item.model';
-import { User } from 'src/modules/user';
+import { User } from '@modules';
 
 export enum OrderStatus {
   progress,
@@ -17,7 +17,7 @@ export enum OrderStatus {
 
 @Table({ tableName: 'orders', timestamps: true })
 export class Order extends Model {
-  @Column({ type: DataType.BIGINT, primaryKey: true, autoIncrement: true })
+  @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
 
   @Column({ type: DataType.INTEGER, allowNull: false })

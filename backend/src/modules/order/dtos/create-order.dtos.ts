@@ -11,8 +11,15 @@ import { OrderItem } from '../models';
 
 export class CreateOrderDto implements CreateOrderRequest {
   @ApiProperty({
-    isArray: true,
-    type: OrderItem,
+    type: "array",
+    items: {
+      type: "object",
+      properties: {
+        foodId: { type: "number", example: 1 },
+        quantity: { type: "number", example: 2 },
+      },
+      required: ["foodId", "quantity"],
+    }
   })
   @IsArray()
   @ValidateNested({ each: true })

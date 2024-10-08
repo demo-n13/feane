@@ -1,12 +1,14 @@
 import {
   IsEmail,
-  IsNumberString,
+  IsEnum,
   IsOptional,
+  IsPhoneNumber,
   IsString,
   Length,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateUserRequest } from '../interfaces';
+import { UserRoles } from '../models';
 
 export class CreateUserDto implements Omit<CreateUserRequest, 'image'> {
   @ApiProperty({
@@ -28,10 +30,12 @@ export class CreateUserDto implements Omit<CreateUserRequest, 'image'> {
   @ApiProperty({
     type: String,
     required: true,
-    example: '933211232',
+    example: '+998933211232',
+    maxLength: 13,
+    minLength: 13
   })
-  @IsNumberString()
-  @Length(9, 9)
+  @IsPhoneNumber("UZ")
+  @Length(13, 13)
   phone: string;
 
   @ApiProperty({
@@ -41,4 +45,13 @@ export class CreateUserDto implements Omit<CreateUserRequest, 'image'> {
   })
   @IsOptional()
   image?: any;
+
+  @ApiProperty({
+    enum: UserRoles,
+    name: "Role",
+    required: false,
+  })
+  @IsOptional()
+  @IsEnum(UserRoles)
+  role?: UserRoles;
 }
