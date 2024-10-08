@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { appConfig, dbConfig, jwtConfig } from '@config';
+import { appConfig, dbConfig, emailConfig, jwtConfig } from '@config';
 import {
+  AuthModule,
   Category,
   CategoryModule,
+  EmailModule,
   Food,
   FoodModule,
   Order,
@@ -17,16 +19,21 @@ import {
   User,
   UserModule,
 } from '@modules';
-import { CheckAuthGuard } from './guards';
+import { CheckAuthGuard, CheckRoleGuard } from '@guards';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { CheckRoleGuard } from './guards/check-role.guard';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([{
+      ttl: 30000,
+      limit: 300,
+    }]),
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, dbConfig,jwtConfig],
+      load: [appConfig, dbConfig, jwtConfig,emailConfig],
     }),
     ServeStaticModule.forRoot({
       serveRoot: '/uploads',
@@ -51,7 +58,6 @@ import { CheckRoleGuard } from './guards/check-role.guard';
             username: config.get('database.user'),
             password: config.get('database.password'),
             database: config.get('database.dbName'),
-            storage: ":memory:",
             models: [Category, Food, User, Order, OrderItem, Review],
             synchronize: true,
             // sync: {force: true},
@@ -62,6 +68,25 @@ import { CheckRoleGuard } from './guards/check-role.guard';
           console.log(error);
         }
       },
+    }
+    ),
+    
+    MailerModule.forRootAsync({
+      imports : [ConfigModule],
+      inject : [ConfigService],
+      useFactory : (config : ConfigService) => {
+        return {
+          transport : {
+            host : config.get('email.host'),
+            port : config.get<number>('email.port'),
+            secure : false,
+            auth : {
+              user : config.get('email.username'),
+              pass : config.get('email.password'),
+            }
+          }
+        }
+      }
     }),
     CategoryModule,
     FoodModule,
@@ -69,8 +94,14 @@ import { CheckRoleGuard } from './guards/check-role.guard';
     UserModule,
     OrderModule,
     ReviewModule,
+    AuthModule,
+    EmailModule
   ],
   providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    },
     {
       useClass: CheckAuthGuard,
       provide: APP_GUARD,
@@ -81,4 +112,4 @@ import { CheckRoleGuard } from './guards/check-role.guard';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

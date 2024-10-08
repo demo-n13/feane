@@ -8,7 +8,7 @@ export class CategoryService {
   constructor(@InjectModel(Category) private categoryModel: typeof Category) { }
 
   async getAllCategories(): Promise<Category[]> {
-    return await this.categoryModel.findAll();
+     return await this.categoryModel.findAll();
   }
 
   async createCategory(payload: CreateCategoryRequest): Promise<Category> {

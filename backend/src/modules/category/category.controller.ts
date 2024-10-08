@@ -11,7 +11,9 @@ import {
 import { CategoryService } from './category.service';
 import { Category } from './models';
 import { CreateCategoryDto, UpdateCategoryDto } from './dtos';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Protected, Roles } from '@decorators';
+import { UserRoles } from '../user';
 
 @ApiTags('Category')
 @Controller('categories')
@@ -22,11 +24,19 @@ export class CategoryController {
     this.service = service;
   }
 
-  @ApiOperation({ description: 'Barcha categoriesni olish', summary: "Barcha categoriyalarni olish" })
+  @Protected(false)
+  @Roles([UserRoles.user, UserRoles.admin])
+  @ApiOperation({
+    description: 'Barcha categoriesni olish',
+    summary: 'Barcha categoriyalarni olish',
+  })
   @Get()
   async getCategories(): Promise<Category[]> {
     return await this.service.getAllCategories();
   }
+  @ApiBearerAuth()
+  @Protected(true)
+  @Roles([UserRoles.admin])
   @ApiOperation({ summary: 'Yangi category yaratish' })
   @Post('/add')
   async createCategory(
@@ -35,6 +45,9 @@ export class CategoryController {
     return await this.service.createCategory(createCategoryPayload);
   }
 
+  @ApiBearerAuth()
+  @Protected(true)
+  @Roles([UserRoles.admin])
   @ApiOperation({ summary: 'Categoryni update qilish' })
   @Put('/edit/:categoryId')
   async updateCategory(
@@ -46,7 +59,11 @@ export class CategoryController {
       id: categoryId,
     });
   }
-  @ApiOperation({ summary: 'Categoryni o\'chirish' })
+
+  @ApiBearerAuth()
+  @Protected(true)
+  @Roles([UserRoles.admin])
+  @ApiOperation({ summary: "Categoryni o'chirish" })
   @Delete('/delete/:categoryId')
   async deleteCategory(
     @Param('categoryId', ParseIntPipe) categoryId: number,

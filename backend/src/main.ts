@@ -1,14 +1,28 @@
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import * as morgan from 'morgan';
-import { AppModule } from './app';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import * as morgan from 'morgan';
+import * as compression from 'compression';
+import * as csurf from 'csurf';
+import { AppModule } from './app';
 import { ExceptionHandlerFilter } from './filters';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
+
+  // CORS enabled
+  app.enableCors({
+    origin: "*",
+    methods: ["GET", "PUT", "PATCH", "POST", "DELETE"]
+  })
+
+  // COMPRESSION
+  app.use(compression())
+
+  // CSURF configuration
+  // app.use(csurf());
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -30,6 +44,7 @@ async function bootstrap() {
     .setTitle('Feane restaurant API')
     .setDescription('The feane API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
