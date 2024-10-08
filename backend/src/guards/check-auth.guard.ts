@@ -1,4 +1,3 @@
-
 import {
   BadRequestException,
   CanActivate,
@@ -20,17 +19,8 @@ export declare interface RequestInterface extends Request {
   role: string | undefined
 }
 
-
-import { CategoryService } from "@modules";
-import { BadRequestException, CanActivate, ExecutionContext } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import { mock } from "node:test";
-import { Observable } from "rxjs";
-import { Protected } from "src/decorators";
-import { TestContext } from "node:test";
-
+@Injectable()
 export class CheckAuthGuard implements CanActivate {
-
   constructor(private reflector: Reflector, private jwtService: JwtService, private config: ConfigService) { }
 
   canActivate(
@@ -39,10 +29,11 @@ export class CheckAuthGuard implements CanActivate {
     const ctx = context.switchToHttp();
     const request = ctx.getRequest<RequestInterface>();
 
-        if (!(bearerToken && bearerToken.startsWith('Bearer') && bearerToken.split('Bearer ')[1]?.length)) {
-            throw new BadRequestException('Please provide valid bearer token')
-        }
-
+    // GET 'PROTECTED' DECORATOR VALUE FROM REFLECTOR
+    const isProtected = this.reflector.get<boolean>(
+      Protected,
+      context.getHandler(),
+    );
 
     if (!isProtected) {
       request.role = UserRoles.user
@@ -52,11 +43,16 @@ export class CheckAuthGuard implements CanActivate {
     // GET BEARER TOKEN FROM AUTHORIZATION HEADER
     const bearerToken = request.headers['authorization'];
 
-        const token = bearerToken.split('Bearer')[1]
-
-        return true
+    // CHECK IF BEARER TOKEN IS VALID AND AVAILABLE
+    if (
+      !(
+        bearerToken &&
+        bearerToken.startsWith('Bearer') &&
+        bearerToken.split('Bearer ')[1]?.length
+      )
+    ) {
+      throw new BadRequestException('Please provide valid bearer token');
     }
-
 
     // SPLIT ACCESS TOKEN FROM BEARER TOKEN
     const token = bearerToken.split('Bearer ')[1];
@@ -88,20 +84,3 @@ export class CheckAuthGuard implements CanActivate {
     return true;
   }
 }
-
-
-describe ('CategoryService', ()=> {
-    let CategoryService: CategoryService;
-    let mockCategoryModel: Partial<typeof Category>;
-
-    beforeEach(async ()=> {
-        mockCategoryModel = {
-            findAll: jest.fn().mockResolvedValue([{id: 1, name: 'Burgers'}])
-        }
-        const module = await TestContext.createTestingModule({
-            
-        })
-    })
-
-    
-})
