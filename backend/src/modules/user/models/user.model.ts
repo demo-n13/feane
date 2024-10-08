@@ -2,6 +2,7 @@ import { Table, Model, Column, DataType, HasMany } from 'sequelize-typescript';
 import { Order, Review } from '@modules';
 
 export enum UserRoles {
+
   user = 'USER',
   admin = 'ADMIN',
 }
@@ -19,6 +20,7 @@ export class User extends Model {
 
   @Column({ type: DataType.TEXT, allowNull: false, unique: true })
   email: string;
+
 
   @Column({
     type: DataType.ENUM,

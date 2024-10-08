@@ -1,3 +1,4 @@
+
 import { IsEmail, IsNotEmpty, IsPhoneNumber } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { LoginRequest } from "../interfaces";
@@ -12,7 +13,7 @@ export class LoginDto implements LoginRequest {
     @IsNotEmpty()
     email: string;
 
-
+    
     @ApiProperty({
         type: "string",
         required: true,
