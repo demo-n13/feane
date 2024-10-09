@@ -10,12 +10,12 @@ import { showCategories, showFoods, showReviews } from "./utils.js";
 
 const allCategories = await getAllCategories();
 const allFoods = await getAllFoods();
-const allReviews = await getAllReviews()
+const allReviews = await getAllReviews();
 
 // SHOW CATEGORIES,FOODS AND REVIEWS TO UI
 showCategories(allCategories);
 showFoods(allFoods);
-showReviews(allReviews)
+showReviews(allReviews);
 
 const categoryListitems = document.querySelectorAll(".filters_menu li");
 
@@ -31,10 +31,22 @@ categoryListitems.forEach((item, i, arr) => {
     if (categoryId == "*") {
       const allFoods = await getAllFoods();
       showFoods(allFoods);
-      return ;
+      return;
     }
 
     const allFoods = await getAllFoodsByCategoryId(categoryId);
     showFoods(allFoods);
   });
+});
+
+const userPageBtn = document.querySelector(".user_link");
+
+userPageBtn.addEventListener("click", () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "./login.html";
+  } else {
+    window.location.href = "./profile.html";
+  }
 });

@@ -24,3 +24,11 @@ export const getAllReviews = async () => {
 
     return allReviews.data
 }
+
+
+export const getMe = async () => {
+    const data = await axiosCustom.get("/me");
+    localStorage.setItem("user", JSON.stringify(data.data))
+    return data.data
+}
+
