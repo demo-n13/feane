@@ -7,7 +7,7 @@ export class UpdateCategoryDto implements Omit<UpdateCategoryRequest, "id"> {
         example: "Burgers update",
         description:"Category update name",
         required: true
-    })
+    }) 
     @IsString()
     @IsNotEmpty()
     name: string;

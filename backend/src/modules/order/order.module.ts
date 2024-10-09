@@ -9,5 +9,6 @@ import { OrderController } from './order.controller';
   imports: [SequelizeModule.forFeature([Order, OrderItem, Food])],
   providers: [OrderService],
   controllers: [OrderController],
+  exports: [OrderService],
 })
 export class OrderModule {}

@@ -8,17 +8,13 @@ import { CategoryService, Food, FoodService } from '@modules';
 import { inlineKeyboard } from 'telegraf/typings/markup';
 
 
-
-
-
-
 @Injectable()
 @Update()
 export class BotService {
     constructor(
         private readonly categoryService: CategoryService,
         private readonly foodService: FoodService
-    ) { }
+    ) { } 
 
     @Start()
     async startBot(@Ctx() context: Context): Promise<void> {
@@ -81,6 +77,7 @@ export class BotService {
         )
     }
 
+
     @Action(/category_\d+/)
     async CategoryAction(@Ctx() context: Context): Promise<void> {
         const callbackQuery = context.callbackQuery;
@@ -104,6 +101,7 @@ export class BotService {
 
         }
     }
+
 
     @Action(/food_\d+/)
     async FoodAction(@Ctx() context: Context): Promise<void> {
@@ -134,10 +132,11 @@ description: ${food[0].description}
                     `,
                     reply_markup: {
                         inline_keyboard: [
-                            [{ callback_data: "savat+", text: "savatga qo'shish" }]
+
                         ],
                         keyboard: [
-                            [{text: 'zakaz qilish'}, {text: "savatni ko'rish"}]
+                            [{ text: 'zakaz qilish' }, { text: "savatni ko'rish" }],
+                            [{ text: "savatga qo'shish" }]
                         ], resize_keyboard: true
                     }
 
@@ -145,5 +144,11 @@ description: ${food[0].description}
 
             )
         }
+    }
+
+
+    @Hears("savatga qo'shish")
+    async addOrder(@Ctx() context: Context): Promise<void> {
+
     }
 }
