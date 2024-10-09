@@ -24,6 +24,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { BotModule } from '@client';
+import { session } from 'telegraf';
 
 @Module({
   imports: [
@@ -73,7 +74,8 @@ import { BotModule } from '@client';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        token: config.get<string>("bot.token")
+        token: config.get<string>("bot.token"),
+        middlewares: [session()]
       })
     }),
     BotModule,

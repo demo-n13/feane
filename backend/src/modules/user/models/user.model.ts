@@ -20,6 +20,9 @@ export class User extends Model {
   @Column({ type: DataType.TEXT, allowNull: false, unique: true })
   email: string;
 
+  @Column({type: DataType.INTEGER, allowNull: true })
+  telegram_id?: string;
+
   @Column({
     type: DataType.ENUM,
     values: [UserRoles.admin, UserRoles.user],

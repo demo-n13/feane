@@ -43,8 +43,6 @@ export class CheckAuthGuard implements CanActivate {
     // GET BEARER TOKEN FROM AUTHORIZATION HEADER
     const bearerToken = request.headers['authorization'];
 
-    console.log(bearerToken, "bearer")
-
     // CHECK IF BEARER TOKEN IS VALID AND AVAILABLE
     if (
       !(
