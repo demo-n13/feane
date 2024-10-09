@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { appConfig, dbConfig, jwtConfig } from '@config';
+import { appConfig, botConfig, dbConfig, jwtConfig } from '@config';
 import {
   AuthModule,
   Category,
@@ -33,7 +33,7 @@ import { BotModule } from '@client';
     }]),
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, dbConfig, jwtConfig],
+      load: [appConfig, dbConfig, jwtConfig, botConfig],
     }),
     ServeStaticModule.forRoot({
       serveRoot: '/uploads',
@@ -69,8 +69,12 @@ import { BotModule } from '@client';
         }
       },
     }),
-    TelegrafModule.forRoot({
-      token: "8125352480:AAGyXSeAHO3_7HmlhrB8mSugadHzFFaBQHY",
+    TelegrafModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        token: config.get<string>("bot.token")
+      })
     }),
     BotModule,
     CategoryModule,
