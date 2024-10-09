@@ -23,7 +23,8 @@ import { CheckAuthGuard, CheckRoleGuard } from '@guards';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-
+import { BotModule } from './client/bot/bot.module';
+import { TelegrafModule } from 'nestjs-telegraf';
 @Module({
   imports: [
     ThrottlerModule.forRoot([{
@@ -68,6 +69,10 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
         }
       },
     }),
+    TelegrafModule.forRoot({
+      token: process.env.TELEGRAM_BOT_TOKEN
+    }),
+    BotModule,
     CategoryModule,
     FoodModule,
     UploadModule,
@@ -77,10 +82,10 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
     AuthModule,
   ],
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard
-    },    
+    // {
+      // provide: APP_GUARD,
+      // useClass: ThrottlerGuard
+    // },    
     {
       useClass: CheckAuthGuard,
 

@@ -10,5 +10,6 @@ import { JwtService } from '@nestjs/jwt';
   imports: [SequelizeModule.forFeature([Food])],
   providers: [UploadService, JwtService, FoodService],
   controllers: [FoodController],
+  exports: [FoodService]
 })
 export class FoodModule {}

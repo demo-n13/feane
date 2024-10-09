@@ -39,6 +39,7 @@ export class FoodController {
     return await this.#_service.getAllFoods();
   }
 
+
   @Protected(false)
   @Roles([UserRoles.admin, UserRoles.user])
   @ApiOperation({ summary: "Barcha foodlarni category bo'yicha olish" })
@@ -48,6 +49,7 @@ export class FoodController {
   ): Promise<Food[]> {
     return await this.#_service.getAllFoodsByCategory(categoryId);
   }
+
   @ApiBearerAuth()
   @Protected(true)
   @Roles([UserRoles.admin])

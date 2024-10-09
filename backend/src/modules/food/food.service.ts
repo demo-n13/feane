@@ -18,6 +18,10 @@ export class FoodService {
     return await this.foodModel.findAll();
   }
 
+  async getFoodsById(foodId: number): Promise<Food[]>{
+    return await this.foodModel.findAll({where: {id: foodId}})
+  }
+
   async getAllFoodsByCategory(categoryId: number): Promise<Food[]> {
     return await this.foodModel.findAll({where: {category_id: categoryId}});
   }

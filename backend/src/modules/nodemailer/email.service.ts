@@ -30,8 +30,8 @@ export class EmailService {
       console.error('Email jo‘natishda xatolik:', error);
     }
 
-    async conifirmOtp(email: string){
-      const 
-    }
+    // async conifirmOtp(email: string){
+    //   const 
+    // }
   }
 }
