@@ -1,4 +1,3 @@
-
 import { getModelToken } from "@nestjs/sequelize";
 import { Test, TestingModule } from "@nestjs/testing"
 import { CategoryService, Category } from "@modules";
@@ -47,5 +46,4 @@ describe("CategoryService", () => {
         expect(response.name).toEqual(createCategoryDto.name)
         expect(categoryMockModel.create).toHaveBeenCalled()
     })
-
 })

@@ -10,7 +10,7 @@ export class UpdateUserImageDto
     required: true,
     example: 1,
   })
-  @IsNumberString()
+  @IsNumberString()    
   userId: number;
 
   @ApiProperty({
@@ -20,3 +20,4 @@ export class UpdateUserImageDto
   })
   image: any;
 }
+                     
