@@ -4,9 +4,10 @@ import {
   Column,
   DataType,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { Order } from './order.model';
-import { User } from '@modules';
+import { Food } from '@modules';
 
 @Table({ tableName: 'order-items', timestamps: true })
 export class OrderItem extends Model {
@@ -27,11 +28,14 @@ export class OrderItem extends Model {
   })
   order_id: number;
 
-  @ForeignKey(() => User)
+  @ForeignKey(() => Food)
   @Column({
     type: DataType.INTEGER,
     onDelete: 'CASCADE',
     onUpdate: 'NO ACTION',
   })
-  user_id: number;
+  food_id: number;
+
+  @BelongsTo(() => Food)
+  food: Food
 }

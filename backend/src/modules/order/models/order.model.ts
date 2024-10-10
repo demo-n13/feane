@@ -10,9 +10,9 @@ import { OrderItem } from './order-item.model';
 import { User } from '@modules';
 
 export enum OrderStatus {
-  progress,
-  completed,
-  canceled,
+  progress = "progress",
+  completed = "completed",
+  canceled = "canceled"
 }
 
 @Table({ tableName: 'orders', timestamps: true })
@@ -27,7 +27,8 @@ export class Order extends Model {
   createdAt?: Date;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.ENUM,
+    values: [OrderStatus.canceled, OrderStatus.completed, OrderStatus.progress],
     defaultValue: OrderStatus.progress,
     allowNull: false,
   })

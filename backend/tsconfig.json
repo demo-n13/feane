@@ -16,7 +16,8 @@
       "@decorators": ["./src/decorators"],
       "@filters": ["./src/filters"],
       "@guards": ["./src/guards"],
-      "@client": ["./src/client"]
+      "@client": ["./src/client"],
+      "@seeds": ["./src/seeds"],
     },
     "incremental": true,
     "skipLibCheck": true,

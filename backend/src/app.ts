@@ -25,6 +25,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { BotModule } from '@client';
 import { session } from 'telegraf';
+import { SeedsModule } from '@seeds';
 
 @Module({
   imports: [
@@ -78,6 +79,7 @@ import { session } from 'telegraf';
         middlewares: [session()]
       })
     }),
+    SeedsModule,
     BotModule,
     CategoryModule,
     FoodModule,

@@ -6,8 +6,6 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateOrderRequest, OrderItemInterface } from '../interfaces';
-import { Type } from 'class-transformer';
-import { OrderItem } from '../models';
 
 export class CreateOrderDto implements CreateOrderRequest {
   @ApiProperty({
@@ -23,7 +21,6 @@ export class CreateOrderDto implements CreateOrderRequest {
   })
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => OrderItem)
   orderItems: OrderItemInterface[];
 
   @ApiProperty({
