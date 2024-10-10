@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { createReadStream } from 'fs';
 import { Action, Command, Ctx, On, Start, Update } from 'nestjs-telegraf';
 import * as path from 'path';
-import { Context, SessionStore } from 'telegraf';
+import { Context } from 'telegraf';
 import { Message } from 'telegraf/typings/core/types/typegram';
 import * as opencage from 'opencage-api-client';
 

@@ -5,12 +5,16 @@ import {
   getAllFoods,
   getAllFoodsByCategoryId,
   getAllReviews,
+  getMe,
 } from "./requests.js";
 import { showCategories, showFoods, showReviews } from "./utils.js";
 
 const allCategories = await getAllCategories();
 const allFoods = await getAllFoods();
 const allReviews = await getAllReviews();
+
+// GET USER DATA
+await getMe();
 
 // SHOW CATEGORIES,FOODS AND REVIEWS TO UI
 showCategories(allCategories);
@@ -49,4 +53,13 @@ userPageBtn.addEventListener("click", () => {
   } else {
     window.location.href = "./profile.html";
   }
+});
+
+// LISTEN LOGOUT USER
+const logoutBtn = document.querySelector(".logout-button");
+
+logoutBtn.addEventListener("click", () => {
+  alert("Logout successfully");
+  localStorage.clear();
+  window.location.href = "./login.html";
 });

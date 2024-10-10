@@ -14,7 +14,7 @@ export class OrderService {
 
   async getAllOrders(): Promise<Order[]> {
     return await this.orderModel.findAll({
-      include: OrderItem,
+      include: [OrderItem],
     });
   }
 

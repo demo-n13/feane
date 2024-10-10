@@ -32,7 +32,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @Protected(true)
-  @Roles([UserRoles.admin])
+  @Roles([UserRoles.admin, UserRoles.user])
   @ApiOperation({ summary: 'Yangi user yaratish' })
   @ApiConsumes('multipart/form-data')
   @Post('/add')

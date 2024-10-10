@@ -133,3 +133,91 @@ export const showReviews = (data) => {
     );
   });
 };
+
+export const showUserReviews = (reviews) => {
+  const userReviewsWrapper = document.querySelector(".user-reviews");
+
+  let userReviewsData = `<table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Content</th>
+                          <th scope="col">Created At</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{DATA}}
+                      </tbody>`;
+
+  if (!reviews?.length) {
+    userReviewsWrapper.innerHTML = "<p>No reviews yet. ❌</p>";
+    return;
+  }
+  let reviewData = ``;
+  reviews.forEach((r, i) => {
+    reviewData = reviewData.concat(`<tr>
+                          <th scope="row">${i + 1}</th>
+                          <td>${r.content}</td>
+                          <td>${r.createdAt}</td>
+                        </tr>`);
+  });
+  userReviewsData = userReviewsData.replace("{{DATA}}", reviewData.toString());
+  userReviewsWrapper.innerHTML = userReviewsData;
+};
+
+export const showUserOrders = (orders) => {
+  const userOrdersWrapper = document.querySelector(".user-orders");
+
+  let userOrdersData = `<table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Products</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">CreatedAt</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     {{DATA}}
+                    </tbody>
+                  </table>`;
+
+  if (!orders?.length) {
+    userOrdersWrapper.innerHTML = "<p>No orders yet. ❌</p>";
+    return;
+  }
+  let orderData = ``;
+  orders.forEach((o, i) => {
+    orderData = orderData.concat(`<tr>
+                            <th scope="row">${i+1}</th>
+                            <td>${o.total_price}</td>
+                            <td>products</td>
+                            <td>${o.status}</td>
+                            <td>${o.createdAt}</td>
+                      </tr>`);
+  });
+  userOrdersData = userOrdersData.replace("{{DATA}}", orderData.toString());
+  userOrdersWrapper.innerHTML = userOrdersData;
+};
+
+export const showUserProfile = (user) => {
+  const userName = document.querySelector(".user-name");
+  const userPhone = document.querySelector(".user-phone");
+  const userEmail = document.querySelector(".user-email");
+  const userImage = document.querySelector(".user-image");
+
+  userName.value = user.name;
+  userPhone.value = user.phone;
+  userEmail.value = user.email;
+
+  if (user.image?.length) {
+    userImage.setAttribute("src", `${FILE_BASE_URL}${user.image}`);
+  }
+
+  // SHOW USER REVIEWS
+  showUserReviews(user?.reviews);
+
+  // SHOW USER ORDERS
+  showUserOrders(user?.orders)
+};
