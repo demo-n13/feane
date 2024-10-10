@@ -31,7 +31,7 @@ export class OrderService {
   
       for (const orIt of payload.orderItems) {
         const food = await this.foodModel.findByPk(orIt.foodId);
-        console.log(orIt, "testtttttt")
+
         await this.orderItemModel.create({
           food_id: orIt.foodId,
           order_id: order.id,

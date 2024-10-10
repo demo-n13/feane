@@ -3,7 +3,7 @@ import { Injectable, OnModuleInit } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 
 @Injectable()
-export class SeedsService  implements OnModuleInit{
+export class SeedsService  implements OnModuleInit {
     constructor(@InjectModel(User) private userModel: typeof User) {}
 
     async onModuleInit() {

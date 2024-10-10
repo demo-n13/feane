@@ -37,3 +37,21 @@ export const getMe = async () => {
     }
   }
 };
+
+export const refresh = async () => {
+  try {
+    const refreshToken = localStorage.getItem("refreshToken");
+    const response = await axiosCustom.post("/auth/refresh", { refreshToken });
+    localStorage.setItem("token", response?.data?.accessToken);
+    localStorage.setItem("refreshToken", response?.data?.refreshToken);
+
+    axiosCustom.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${response?.data?.accessToken}`;
+
+    window.location.reload();
+  } catch (error) {
+    localStorage.clear();
+    window.location.href = "./login.html";
+  }
+};
