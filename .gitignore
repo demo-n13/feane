@@ -3,5 +3,5 @@ backend/.env
 backend/dist
 backend/uploads/*
 backend/.env.test
-
+.env
 frontend/node_modules

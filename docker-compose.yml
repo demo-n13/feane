@@ -2,14 +2,12 @@ version: '1.0'
 
 services:
   backend:
-    image: node:18-alpine
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: feane
-    working_dir: /app
-    volumes:
-      - ./:/app
     env_file:
       - backend/.env
-    command: sh -c "cd backend && npm i -f && npm run start:dev"
     ports:
       - 3000:3000
     depends_on:
@@ -18,8 +16,7 @@ services:
   postgres_db:
     image: postgres:16-alpine
     container_name: postgres-test
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=abrorbek
+    env_file:
+      - .env
     ports:
       - 5433:5432
