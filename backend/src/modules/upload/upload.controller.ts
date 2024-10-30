@@ -22,7 +22,7 @@ export class UploadController {
 
   @ApiBearerAuth()
   @Protected(true)
-  @Roles([UserRoles.admin])
+  @Roles([UserRoles.admin, UserRoles.user])
   @ApiOperation({ summary: 'Yangi file yaratish' })
   @ApiConsumes("multipart/form-data")
   @Post('/add')
@@ -33,9 +33,10 @@ export class UploadController {
   ): Promise<UploadFileResponse> {
     return await this.service.uploadFile({ ...payload, file });
   }
+
   @ApiBearerAuth()
   @Protected(true)
-  @Roles([UserRoles.admin])
+  @Roles([UserRoles.admin, UserRoles.user])
   @ApiOperation({ summary: 'mavjud faylni o\'chirish' })
   @Delete('/remove')
   async removeFile(

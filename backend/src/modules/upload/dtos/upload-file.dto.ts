@@ -6,7 +6,7 @@ export class UploadFileDto implements Omit<UploadFileRequest, 'file'> {
   @ApiProperty({ type: 'string', required: true, nullable: false })
   @IsString()
   @IsNotEmpty()
-  destination: string;
+  bucket: string;
 
   @ApiProperty({ type: 'string', format: 'binary', required: true })
   file: any;

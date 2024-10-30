@@ -25,7 +25,7 @@ export class FoodService {
   async createFood(payload: CreateFoodRequest): Promise<void> {
     const fileOptions = await this.#_uploadService.uploadFile({
       file: payload.image,
-      destination: 'uploads/foods',
+      bucket: 'foods',
     });
 
     await this.foodModel.create({

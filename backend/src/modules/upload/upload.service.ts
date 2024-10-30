@@ -8,10 +8,21 @@ import {
   UploadFileResponse,
 } from './interfaces';
 import { existsSync } from 'fs';
+import { Client } from 'minio';
 
 @Injectable()
 export class UploadService {
-  constructor() {}
+  private minioClient: Client;
+
+  constructor() {
+    this.minioClient = new Client({
+      endPoint: 'localhost',
+      port: 9000,
+      useSSL: false,
+      accessKey: 'QbiaRhUMIXgUmfzVSfR6',
+      secretKey: 'aPTTPf1lhusv1e0JybHWF1bIcKjJzm1wlkJ9GEmH',
+    });
+  }
 
   async uploadFile(payload: UploadFileRequest): Promise<UploadFileResponse> {
     // GENERATE UNIQUE FILE NAME
@@ -19,44 +30,36 @@ export class UploadService {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
     const fileName = payload.file.fieldname + '-' + uniqueSuffix + extName;
 
-    // GET FILE'S FULL PATH
-    const fullFilePath = path.join(
-      __dirname,
-      '../../../',
-      payload.destination,
-      fileName,
-    );
+    // Check if bucket exists
+    const isBucketExists = await this.minioClient.bucketExists(payload.bucket);
 
-    const isFileFolderExists = existsSync(
-      path.join(__dirname, '../../../', payload.destination),
-    );
-
-    // CREATE UPLOAD FOLDER IF DESTINATION IS NOT FOUND
-    if (!isFileFolderExists) {
-      fs.mkdir(path.join(__dirname, '../../../', payload.destination));
+    // If bucket not exists then create it
+    if (!isBucketExists) {
+      await this.minioClient.makeBucket(payload.bucket);
     }
 
-    // WRITE FILE TO DESTINATION
-    await fs.writeFile(fullFilePath, payload.file.buffer);
+    // Upload file to minio server
+    const file = await this.minioClient.putObject(
+      payload.bucket,
+      fileName,
+      payload.file.buffer,
+    );
 
     // CREATE IMAGE URL
-    const imageUrl = `${payload.destination}/${fileName}`;
+    const imageUrl = `${payload.bucket}/${fileName}`;
 
     return {
       imageUrl,
       message: 'File written successfully',
+      etag: file.etag,
     };
   }
 
   async removeFile(payload: RemoveFileRequest): Promise<RemoveFileResponse> {
-    const filePath = path.join(__dirname, '../../../', payload.fileName);
-
-    const isFileExists = existsSync(filePath);
-
-    // CREATE UPLOAD FOLDER IF DESTINATION IS NOT FOUND
-    if (isFileExists) {
-      await fs.unlink(filePath);
-    }
+    await this.minioClient.removeObject(
+      payload.fileName.split('/')[0],
+      payload.fileName.split('/')[1],
+    );
 
     return {
       message: 'File removed successfully',

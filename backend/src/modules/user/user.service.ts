@@ -25,7 +25,7 @@ export class UserService {
 
     if (payload?.image) {
       imageUrl = await this.uploadService.uploadFile({
-        destination: 'uploads',
+        bucket: 'users',
         file: payload.image,
       });
     }
@@ -48,7 +48,7 @@ export class UserService {
     let imageUrl: null | UploadFileResponse = null;
 
     imageUrl = await this.uploadService.uploadFile({
-      destination: 'uploads',
+      bucket: 'users',
       file: payload.image,
     });
 
